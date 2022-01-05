@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .parent{
+            border:2px solid red;
+            display:flex;
+        }
+        .second{
+            border:4px solid yellow;
+        }
+    </style>
+</head>
+<body>
+<div id = "demo"></div>
+<div class = "parent"> 
+    <div class="icon">
+    </div>
+
+    <div class="main_content">
+        </div>
+    <div class = "review"> 
+
+    </div>
+<script>
+    function loadDoc(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200){
+                const data = JSON.parse(this.responseText)
+                const demo = document.getElementById("demo");
+                data.items.forEach(item=>{
+                    const obj = {
+                        repo_name: item.full_name,
+                        repo_url: item.html_url,
+                        icon: item.owner.avatar_url,
+                        updated_at: item.updated_at,
+                        author: item.name,
+                        stars: item.stargazers_count,
+                        forks: item.forks_count,
+                        language: item.language,
+                        avatar_url: item.owner.avatar_url,
+                        owner_url: item.owner.html_url,
+                    }
+                    const parent = document.createElement("div");
+                    const icon = document.createElement("div");
+                    const img = document.createElement("img");
+                    img.src = obj.avatar_url;
+                    img.width = "52";
+                    img.height = "52";
+
+                    const link = document.createElement("a");
+                    link.href = obj.owner_url;
+                    link.appendChild(img);
+                    icon.appendChild(link);
+                    parent.appendChild(icon);
+                    demo.appendChild(parent);
+
+                    const main_content = document.createElement("div");
+                    const title = document.createElement("h3");
+                    title.href = obj.repo_name;
+                    title.color = "blue";
+                    title.fontWeight = "bold";
+                    title.style.textDecoration = "underline";
+                    const link1 = document.createElement("b");
+                    link1.href = obj.repo_url;
+                    link1.appendChild(title);
+                    main_content.appendChild(link1);
+                    parent.appendChild(main_content);
+                    demo.appendChild(parent);
+                 
+                    const content1 = document.createElement("p");
+                    content1.href = obj.description;
+                    content1.fontWeight = "medium";
+                    main_content.appendChild(content1);
+                    parent.appendChild(main_content);
+                    demo.appendChild(parent);
+
+                    const content2 = document.createElement("h4");
+                    content2.href = obj.author;
+                    content2.fontWeight = "medium";
+                    const content21 = document.createElement("h4")
+                    content21.href = obj.updated_at;
+                    content2.appendChild(content21);
+                    main_content.appendChild(content2);
+                    parent.appendChild(main_content);
+                    demo.appendChild(parent);
+
+
+                   const review = document.createElement("b");
+                   review.href = obj.language;
+                   review.fontWeight ="bold";
+                   const review1 = document.createElement("b");
+                   review1.href = obj.stars;
+                   review1.fontWeight = "bold";
+                   const review2 = document.createElement("b");
+                   review2.href = obj.forks_count;
+                   review2.fontWeight = "bold";
+                   review1.appendChild(review2);
+                   review.appendChild(review1);
+                   parent.appendChild(review);
+                   demo.appendChild(parent);
+
+
+                
+
+
+
+
+
+
+
+
+                });
+            }
+        };
+        xhttp.open("GET", "https://api.github.com/search/repositories?q=tetris+language%3Aassembly&order=asc&sort=stars", true);
+        xhttp.send();
+    }
+    loadDoc()
+    </script>
+</body>
+</html>
