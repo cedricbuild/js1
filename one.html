@@ -12,7 +12,15 @@
         }
         .second{
             border:4px solid yellow;
+            width: 70%;
         }
+        
+        .inline {
+ 		 display: inline;
+         padding: 2px;
+         margin: 2px;
+         width:20%;
+		}
     </style>
 </head>
 <body>
@@ -45,9 +53,13 @@
                         language: item.language,
                         avatar_url: item.owner.avatar_url,
                         owner_url: item.owner.html_url,
+                        description: item.description
                     }
                     const parent = document.createElement("div");
+                    parent.classList.add('parent');
+                    
                     const icon = document.createElement("div");
+                    icon.classList.add('first');
                     const img = document.createElement("img");
                     img.src = obj.avatar_url;
                     img.width = "52";
@@ -58,67 +70,67 @@
                     link.appendChild(img);
                     icon.appendChild(link);
                     parent.appendChild(icon);
-                    demo.appendChild(parent);
 
                     const main_content = document.createElement("div");
+                    main_content.classList.add('second');
+                    
                     const title = document.createElement("h3");
-                    title.href = obj.repo_name;
+                    title.textContent = obj.repo_name;
                     title.color = "blue";
                     title.fontWeight = "bold";
                     title.style.textDecoration = "underline";
-                    const link1 = document.createElement("b");
+                    title.textContent = obj.repo_name;
+                    const link1 = document.createElement("a");
                     link1.href = obj.repo_url;
                     link1.appendChild(title);
-                    main_content.appendChild(link1);
-                    parent.appendChild(main_content);
-                    demo.appendChild(parent);
-                 
                     const content1 = document.createElement("p");
                     content1.href = obj.description;
                     content1.fontWeight = "medium";
+                    content1.textContent = obj.description;
+                    
+
+
+					
+                    
+                    const content21 = document.createElement("span")
+                    content21.textContent =obj.author+" " + obj.updated_at;
+                    
+                    main_content.appendChild(link1);
                     main_content.appendChild(content1);
-                    parent.appendChild(main_content);
+					main_content.appendChild(content21);
+                    
+					parent.appendChild(main_content);
+                    
+
+					
+                    const stats = document.createElement("span");
+                    
+                    const review = document.createElement("p");
+                    review.textContent = "🔵 "+obj.language;
+                    review.fontWeight ="bold";
+                    review.classList.add("inline");
+                    const review1 = document.createElement("p");
+                    review1.textContent = "✩ "+obj.stars+'w';
+                    review1.fontWeight = "bold";
+                    review1.classList.add("inline");
+                    const review2 = document.createElement("p");
+                    review2.textContent = " "+obj.forks+'w';
+                    review2.fontWeight = "bold";
+                    review2.classList.add("inline");
+                    
+                    stats.appendChild(review);
+                    stats.appendChild(review1);
+                    stats.appendChild(review2);
+                    
+                    
+                    parent.appendChild(stats);
+                    
                     demo.appendChild(parent);
-
-                    const content2 = document.createElement("h4");
-                    content2.href = obj.author;
-                    content2.fontWeight = "medium";
-                    const content21 = document.createElement("h4")
-                    content21.href = obj.updated_at;
-                    content2.appendChild(content21);
-                    main_content.appendChild(content2);
-                    parent.appendChild(main_content);
-                    demo.appendChild(parent);
-
-
-                   const review = document.createElement("b");
-                   review.href = obj.language;
-                   review.fontWeight ="bold";
-                   const review1 = document.createElement("b");
-                   review1.href = obj.stars;
-                   review1.fontWeight = "bold";
-                   const review2 = document.createElement("b");
-                   review2.href = obj.forks_count;
-                   review2.fontWeight = "bold";
-                   review1.appendChild(review2);
-                   review.appendChild(review1);
-                   parent.appendChild(review);
-                   demo.appendChild(parent);
-
-
-                
-
-
-
-
-
-
-
 
                 });
             }
         };
-        xhttp.open("GET", "https://api.github.com/search/repositories?q=tetris+language%3Aassembly&order=asc&sort=stars", true);
+        xhttp.open("GET", "https://api.github.com/search/repositories?q=tetris+language%3Aassembly&order=desc&sort=stars", true);
         xhttp.send();
     }
     loadDoc()
